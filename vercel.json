@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "name": "3il3arabia",
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "styles.css", "use": "@vercel/static" },
+    { "src": "app.js", "use": "@vercel/static" },
+    { "src": "Instagram post - 10.png", "use": "@vercel/static" }
+  ],
+  "cleanUrls": true
+}
+
+

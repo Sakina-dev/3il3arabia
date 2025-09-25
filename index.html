@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#081033">
+    <meta name="color-scheme" content="dark light">
+    <meta property="og:title" content="3il3arabia — Révision Alphabet (Alif → Chîn)">
+    <meta property="og:type" content="website">
+    <title>3il3arabia — Révision Alphabet (Alif → Chîn)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <a class="skip-link" href="#panel-memo">Aller au contenu</a>
+
+    
+
+    <div class="subheader-card">
+    <nav class="tabs" role="tablist" aria-label="Modes d'entraînement">
+        
+        <button class="tab" data-tab="fiches" role="tab" aria-selected="false">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 3h10a2 2 0 0 1 2 2v14l-5-3-5 3V5a2 2 0 0 1 2-2Z"/></svg>
+            <span class="label">Fiches</span>
+        </button>
+        <button class="tab is-active" data-tab="memo" role="tab" aria-selected="true">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3c-4.97 0-9 3.582-9 8 0 2.39 1.18 4.53 3.09 6.03L5 21l3.19-1.28C9.39 20.06 10.67 20 12 20c4.97 0 9-3.58 9-8s-4.03-9-9-9Zm-4 9h8v2H8v-2Zm0-4h8v2H8V8Z"/></svg>
+            <span class="label">Mémoire</span>
+        </button>
+        <button class="tab" data-tab="quiz" role="tab" aria-selected="false">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7h2a5 5 0 1 1 5 5v3h2v-3a7 7 0 0 0-2-14Zm-1 18v2h2v-2h-2Z"/></svg>
+            <span class="label">Quiz</span>
+        </button>
+    </nav>
+    </div>
+
+    <main class="tab-panels">
+        <section id="panel-memo" class="panel is-active" role="tabpanel">
+            <div class="panel-header">
+                <h2>Jeu de mémoire: Associer FR ↔ AR</h2>
+                <div class="controls">
+                    <div class="segmented" role="group" aria-label="Choix de difficulté">
+                        <button class="seg-btn is-active" data-size="6">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 2 7l10 5 10-5-10-5Zm0 7L2 4v11l10 5 10-5V4l-10 5Z"/></svg>
+                            Facile
+                        </button>
+                        <button class="seg-btn" data-size="10">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 2 7l10 5 10-5-10-5Zm0 12-10-5v8l10 5 10-5v-8l-10 5Z"/></svg>
+                            Moyen
+                        </button>
+                        <button class="seg-btn" data-size="13">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 2 7l10 5 10-5-10-5Zm0 7 10-5v8l-10 5-10-5V4l10 5Zm0 8 10-5v8l-10 5-10-5v-8l10 5Z"/></svg>
+                            Complet
+                        </button>
+                    </div>
+                    <button id="memo-reset" class="btn primary">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6Z"/></svg>
+                        <span class="label">Nouveau jeu</span>
+                    </button>
+                </div>
+                <div class="meta">
+                    
+                    <span id="memo-found">Paires trouvées: 0</span>
+                    
+                </div>
+            </div>
+            <div id="memo-grid" class="grid"></div>
+        </section>
+
+        <section id="panel-fiches" class="panel" role="tabpanel">
+            <div class="panel-header">
+                <h2>Fiches: Réviser et retourner</h2>
+            </div>
+            <div id="flashcard" class="flashcard" tabindex="0" aria-label="Carte de révision, appuyer pour retourner">
+                <div class="flash-inner">
+                    <div class="flash-face front" id="flash-front"></div>
+                    <div class="flash-face back" id="flash-back"></div>
+                </div>
+            </div>
+            <div class="flash-controls">
+                <button id="flash-prev" class="btn" aria-label="Précédent">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"/></svg>
+                    <span class="label">Préc.</span>
+                </button>
+                <button id="flash-next" class="btn" aria-label="Suivant">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12l-4.58 4.59Z"/></svg>
+                    <span class="label">Suiv.</span>
+                </button>
+                <button id="flash-shuffle" class="btn">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 7h3l-4 4 2 2 4-4v3h2V5h-7v2Zm-4 6-2-2-6 6h3l5-5Zm-6-8H1v2h3l12 12h3l-2-2L4 5Z"/></svg>
+                    <span class="label">Mélanger</span>
+                </button>
+            </div>
+            <div class="hint">Astuce: appuyez ou tapez Espace pour retourner la carte.</div>
+        </section>
+
+        <section id="panel-quiz" class="panel" role="tabpanel">
+            <div class="panel-header">
+                <h2>Quiz: Nom FR de la lettre affichée</h2>
+                <div class="controls">
+                    <button id="quiz-next" class="btn">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 6v12l8-6-8-6Z"/></svg>
+                        <span class="label">Nouvelle lettre</span>
+                    </button>
+                </div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-score" aria-live="polite">
+                    <span id="score-points">Score: 0</span>
+                    <span id="score-streak">Série: 0</span>
+                    <span id="score-best">Meilleur: 0</span>
+                    <span id="score-left">Reste: 10</span>
+                </div>
+                <div id="quiz-letter" class="quiz-letter" lang="ar" dir="rtl">ا</div>
+                <div id="quiz-options" class="quiz-options" role="listbox" aria-label="Choix de réponse"></div>
+                <div id="quiz-feedback" class="quiz-feedback" role="status" aria-live="polite"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-card">
+        <div class="footer-inner">
+            <div class="f-brand">
+                <div>
+                    <div class="brand-title">3il3arabia</div>
+                    <div class="brand-sub">Apprendre simplement</div>
+                </div>
+            </div>
+            <div class="f-links">
+                <div class="col">
+                    <div class="col-title">Cours particuliers</div>
+                    <p class="col-text">Intéressé par des cours particuliers&nbsp;? Contacte‑moi sur Insta&nbsp;:</p>
+                    <a class="col-link" href="https://www.instagram.com/3ilm3arabia" target="_blank" rel="noopener">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="copy">© 3il3arabia — Alif → Chîn</div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <noscript>Activez JavaScript pour utiliser les jeux interactifs.</noscript>
+</body>
+</html>
+
+
