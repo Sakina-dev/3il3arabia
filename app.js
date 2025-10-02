@@ -4,7 +4,7 @@ const LETTERS = [
   { ar: 'ب', fr: 'Bâ’' },
   { ar: 'ت', fr: 'Tâ’' },
   { ar: 'ث', fr: 'Thâ’' },
-  { ar: 'ج', fr: 'Jîm' },
+  { ar: 'ج', fr: 'Djîm' },
   { ar: 'ح', fr: 'Hâ’' },
   { ar: 'خ', fr: 'Khâ’' },
   { ar: 'د', fr: 'Dâl' },
@@ -16,7 +16,7 @@ const LETTERS = [
   { ar: 'ص', fr: 'Sâd' },
   { ar: 'ض', fr: 'Dâd' },
   { ar: 'ط', fr: 'Tâ’ emphatique' },
-  { ar: 'ظ', fr: 'Zâ’ emphatique' },
+  { ar: 'ظ', fr: 'Dhâ’ emphatique' },
   { ar: 'ع', fr: '‘Ayn' },
   { ar: 'غ', fr: 'Ghayn' },
   { ar: 'ف', fr: 'Fâ’' },
@@ -191,5 +191,6 @@ function newQuizLetter(){
 function initQuiz(){ const next=byId('quiz-next'); next.addEventListener('click',()=>{ quizPool=[]; newQuizLetter(); }); newQuizLetter(); }
 
 window.addEventListener('DOMContentLoaded',()=>{ setupTabs(); initMemo(); initFlashcards(); initQuiz(); });
+
 
 
