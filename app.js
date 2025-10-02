@@ -1,11 +1,11 @@
-// Données Alif → Chîn
+// Données Alif → Yâ’ (28 lettres)
 const LETTERS = [
   { ar: 'ا', fr: 'Alif' },
   { ar: 'ب', fr: 'Bâ’' },
   { ar: 'ت', fr: 'Tâ’' },
   { ar: 'ث', fr: 'Thâ’' },
   { ar: 'ج', fr: 'Jîm' },
-  { ar: 'ح', fr: 'Hâ’ (aspiré)' },
+  { ar: 'ح', fr: 'Hâ’' },
   { ar: 'خ', fr: 'Khâ’' },
   { ar: 'د', fr: 'Dâl' },
   { ar: 'ذ', fr: 'Dhâl' },
@@ -13,6 +13,21 @@ const LETTERS = [
   { ar: 'ز', fr: 'Zay' },
   { ar: 'س', fr: 'Sîn' },
   { ar: 'ش', fr: 'Chîn' },
+  { ar: 'ص', fr: 'Sâd' },
+  { ar: 'ض', fr: 'Dâd' },
+  { ar: 'ط', fr: 'Tâ’ emphatique' },
+  { ar: 'ظ', fr: 'Zâ’ emphatique' },
+  { ar: 'ع', fr: '‘Ayn' },
+  { ar: 'غ', fr: 'Ghayn' },
+  { ar: 'ف', fr: 'Fâ’' },
+  { ar: 'ق', fr: 'Qâf' },
+  { ar: 'ك', fr: 'Kâf' },
+  { ar: 'ل', fr: 'Lâm' },
+  { ar: 'م', fr: 'Mîm' },
+  { ar: 'ن', fr: 'Nûn' },
+  { ar: 'ه', fr: 'Hâ’' },
+  { ar: 'و', fr: 'Wâw' },
+  { ar: 'ي', fr: 'Yâ’' },
 ];
 
 const byId = (id) => document.getElementById(id);
@@ -57,8 +72,16 @@ function renderMemoGrid(){ const grid=byId('memo-grid'); grid.innerHTML=''; memo
 function updateMemoMeta(){ setTextIfExists('memo-moves', `Coups: ${memoState.moves}`); setTextIfExists('memo-found', `Paires trouvées: ${memoState.found}`); }
 function startMemoTimer(){ stopMemoTimer(); memoState.startTs=Date.now(); memoState.timerId=setInterval(()=>{ const s=Math.floor((Date.now()-memoState.startTs)/1000); const mm=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); setTextIfExists('memo-timer', `${mm}:${ss}`); },500); }
 function stopMemoTimer(){ if(memoState.timerId) clearInterval(memoState.timerId); memoState.timerId=null; }
-function onMemoFlip(index, el){ if(memoState.revealed.length>=2) return; if(el.classList.contains('is-matched')||el.classList.contains('is-revealed')) return; el.classList.add('is-revealed'); memoState.revealed.push({index,key:memoState.grid[index].key,el}); if(memoState.revealed.length===2){ memoState.moves+=1; updateMemoMeta(); const [a,b]=memoState.revealed; if(a.key===b.key){ setTimeout(()=>{ a.el.classList.remove('is-revealed'); b.el.classList.remove('is-revealed'); a.el.classList.add('is-matched'); b.el.classList.add('is-matched'); memoState.found+=1; memoState.revealed=[]; updateMemoMeta(); if(memoState.found===memoState.size){ stopMemoTimer(); } },350);} else { setTimeout(()=>{ a.el.classList.remove('is-revealed'); b.el.classList.remove('is-revealed'); memoState.revealed=[]; },650);} } }
-function initMemo(){ const segBtns=qsa('.seg-btn'); const reset=byId('memo-reset'); function rebuild(){ memoState.grid=buildMemoDeck(memoState.size); memoState.moves=0; memoState.found=0; memoState.revealed=[]; renderMemoGrid(); startMemoTimer(); } segBtns.forEach((b)=>{ b.addEventListener('click',()=>{ segBtns.forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); memoState.size=Math.min(parseInt(b.dataset.size,10),LETTERS.length); rebuild(); });}); const active=qs('.seg-btn.is-active'); memoState.size=Math.min(parseInt(active?.dataset.size||'10',10),LETTERS.length); reset.addEventListener('click',rebuild); rebuild(); }
+ function onMemoFlip(index, el){ if(memoState.revealed.length>=2) return; if(el.classList.contains('is-matched')||el.classList.contains('is-revealed')) return; el.classList.add('is-revealed'); memoState.revealed.push({index,key:memoState.grid[index].key,el}); if(memoState.revealed.length===2){ memoState.moves+=1; updateMemoMeta(); const [a,b]=memoState.revealed; if(a.key===b.key){ setTimeout(()=>{ a.el.classList.remove('is-revealed'); b.el.classList.remove('is-revealed'); a.el.classList.add('is-matched'); b.el.classList.add('is-matched'); memoState.found+=1; memoState.revealed=[]; updateMemoMeta(); if(memoState.found===memoState.size){ stopMemoTimer();
+            // Progression automatique vers la difficulté suivante (6 → 10 → 28)
+            setTimeout(()=>{
+              const buttons = qsa('.seg-btn');
+              const currentIndex = buttons.findIndex((b)=>b.classList.contains('is-active'));
+              const nextBtn = currentIndex >= 0 ? buttons[currentIndex+1] : null;
+              if(nextBtn){ nextBtn.click(); }
+            }, 700);
+          } },350);} else { setTimeout(()=>{ a.el.classList.remove('is-revealed'); b.el.classList.remove('is-revealed'); memoState.revealed=[]; },650);} } }
+function initMemo(){ const segBtns=qsa('.seg-btn'); const reset=byId('memo-reset'); function rebuild(){ memoState.grid=buildMemoDeck(memoState.size); memoState.moves=0; memoState.found=0; memoState.revealed=[]; renderMemoGrid(); startMemoTimer(); } segBtns.forEach((b)=>{ b.addEventListener('click',()=>{ segBtns.forEach(x=>x.classList.remove('is-active')); b.classList.add('is-active'); memoState.size=Math.min(parseInt(b.dataset.size,10),LETTERS.length); rebuild(); });}); const active=qs('.seg-btn.is-active'); memoState.size=Math.min(parseInt(active?.dataset.size||'10',10),LETTERS.length); if(reset){ reset.addEventListener('click',rebuild); } rebuild(); }
 
 // Fiches (flip)
 let flashIndex = 0;
@@ -69,16 +92,48 @@ function initFlashcards(){ const card=byId('flashcard'); const prev=byId('flash-
 // Quiz (QCM)
 let quizIndex=0;
 let quizPool=[]; // indices restants pour la série
-let quizLength=10;
+let quizLength=28;
 let score = { points: 0, streak: 0, best: 0 };
+let quizTimerId = null;
+let quizStartTs = null;
+
+function startQuizTimer(){
+  stopQuizTimer();
+  quizStartTs = Date.now();
+  const timerEl = byId('quiz-timer');
+  if(!timerEl) return;
+  const update = () => {
+    const s = Math.floor((Date.now() - quizStartTs) / 1000);
+    const mm = String(Math.floor(s/60)).padStart(2,'0');
+    const ss = String(s%60).padStart(2,'0');
+    timerEl.textContent = `${mm}:${ss}`;
+  };
+  update();
+  quizTimerId = setInterval(update, 500);
+}
+
+function stopQuizTimer(){
+  if (quizTimerId) clearInterval(quizTimerId);
+  quizTimerId = null;
+}
+
+function updateQuizProgress(){
+  const fill = byId('quiz-progress-fill');
+  if(!fill) return;
+  const done = Math.max(0, quizLength - quizPool.length);
+  const pct = Math.min(100, Math.round((done / quizLength) * 100));
+  fill.style.width = pct + '%';
+}
 function generateOptions(correctIndex){ const options=new Set([correctIndex]); while(options.size<4){ options.add(Math.floor(Math.random()*LETTERS.length)); } return shuffle(Array.from(options)).map(i=>({ idx:i, label:LETTERS[i].fr })); }
 function newQuizLetter(){
   // Initialise le pool si vide
   if (quizPool.length === 0) {
     quizPool = shuffle(LETTERS.map((_, i) => i)).slice(0, quizLength);
+    startQuizTimer();
   }
   const leftEl = byId('score-left');
   leftEl.textContent = `Reste: ${quizPool.length}`;
+  updateQuizProgress();
   quizIndex = quizPool[0];
   const item=LETTERS[quizIndex];
   byId('quiz-letter').textContent=item.ar;
@@ -123,6 +178,7 @@ function newQuizLetter(){
           // Fin de série: message final plus moderne
           feedback.innerHTML = `🎉 <strong>Série terminée</strong> — Score: <strong>${score.points}</strong>`;
           feedback.className = 'quiz-feedback quiz-result';
+          stopQuizTimer();
           // Réinitialiser pour une nouvelle série au prochain clic sur "Nouvelle lettre"
         } else {
           newQuizLetter();
